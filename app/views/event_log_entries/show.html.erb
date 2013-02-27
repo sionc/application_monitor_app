@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Message:</b>
+  <%= @event_log_entry.message %>
+</p>
+
+<p>
+  <b>Timestamp:</b>
+  <%= @event_log_entry.timestamp %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_log_entry_path(@event_log_entry) %> |
+<%= link_to 'Back', event_log_entries_path %>

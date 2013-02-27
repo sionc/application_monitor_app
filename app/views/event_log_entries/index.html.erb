@@ -1,0 +1,25 @@
+<h1>Listing event_log_entries</h1>
+
+<table>
+  <tr>
+    <th>Message</th>
+    <th>Timestamp</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @event_log_entries.each do |event_log_entry| %>
+  <tr>
+    <td><%= event_log_entry.message %></td>
+    <td><%= event_log_entry.timestamp %></td>
+    <td><%= link_to 'Show', event_log_entry %></td>
+    <td><%= link_to 'Edit', edit_event_log_entry_path(event_log_entry) %></td>
+    <td><%= link_to 'Destroy', event_log_entry, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Event log entry', new_event_log_entry_path %>
