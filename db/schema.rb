@@ -11,13 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130227234155) do
+ActiveRecord::Schema.define(:version => 20130228011615) do
 
   create_table "event_log_entries", :force => true do |t|
     t.text     "message"
-    t.datetime "time_generated"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "time_generated"
   end
 
 end

@@ -7,7 +7,7 @@
 
 <p>
   <b>Timestamp:</b>
-  <%= @event_log_entry.time_generated %>
+  <%= Time.at(@event_log_entry.time_generated) unless @event_log_entry.time_generated.nil? %>
 </p>
 
 
