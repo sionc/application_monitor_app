@@ -1,6 +1,12 @@
 ApplicationMonitorApp::Application.routes.draw do
-  resources :event_log_entries
+  # resources :event_log_entries
 
+  resources :event_log_entries do
+    collection do
+      post 'upload'
+    end
+  end
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

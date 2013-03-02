@@ -81,4 +81,21 @@ class EventLogEntriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  # POST /upload_event_log_entries
+  # POST /upload_event_log_entries.json
+  def upload
+    event_log_entries = params[:event_log_entries][:event_log_entry]
+
+    respond_to do |format|
+      if EventLogEntry.create(event_log_entries)
+        format.html { redirect_to event_log_entries_url, notice: 'Event log entries were successfully uploaded.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to event_log_entries_url, notice: 'Failed to create event log entries.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+    
 end
