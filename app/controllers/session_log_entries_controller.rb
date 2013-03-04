@@ -88,16 +88,27 @@ class SessionLogEntriesController < ApplicationController
     completed = false;
     
     begin 
-    
+      
       # Parse the session associated with the log entry
       log_entry_session = params[:session_log_entries][:session]
       raise "Failed to parse session data from log entries" if log_entry_session.nil?
+      
+      # Parse system GUID
+      system_guid = log_entry_session[:system_guid]
+      raise "Failed to parse GUID parameter for system" if system_guid.nil?
+      
+      # Get system
+      system = System.where(:guid => system_guid).first
+      
+      # Create system if it does not already exist
+      system = System.create({:guid => system_guid, :name => ("System " + system_guid)}) if system.nil?
+      raise "Failed to create system" if system.nil? 
     
       # Get session
-      guid = log_entry_session[:guid]
-      raise "Failed to parse GUID parameter for session" if guid.nil?
+      session_guid = log_entry_session[:guid]
+      raise "Failed to parse GUID parameter for session" if session_guid.nil?
       
-      session = Session.where(:guid => guid).first
+      session = Session.where(:guid => session_guid).first
     
       # If session does not exist, then create it
       if session.nil?
@@ -117,7 +128,10 @@ class SessionLogEntriesController < ApplicationController
       
         # Create session
         start_time = log_entry_session[:start_time]
-        session = Session.create({:guid => guid, :process_id => session_process.id, :start_time => start_time})
+        session = Session.create({:guid => session_guid, 
+                                  :process_id => session_process.id, 
+                                  :start_time => start_time,
+                                  :system_id => system.id})
         raise "Failed to create session for log entries" if session.nil?
       end
     
@@ -170,7 +184,9 @@ class SessionLogEntriesController < ApplicationController
     
       completed = true;
     rescue Exception => ex 
+      
       logger.error ex.message
+    
     ensure
       
       respond_to do |format|

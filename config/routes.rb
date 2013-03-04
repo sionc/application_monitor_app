@@ -1,4 +1,6 @@
 ApplicationMonitorApp::Application.routes.draw do
+  resources :systems
+
   resources :session_log_entries do
     collection do
       post 'upload'

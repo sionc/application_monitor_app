@@ -85,15 +85,36 @@ class EventLogEntriesController < ApplicationController
   # POST /upload_event_log_entries
   # POST /upload_event_log_entries.json
   def upload
-    event_log_entries = params[:event_log_entries][:event_log_entry]
-
-    respond_to do |format|
-      if EventLogEntry.create(event_log_entries)
-        format.html { render nothing: true, status: :ok }
-      else
-        format.html { render nothing: true, status: :unprocessable_entity  }
+    begin
+      
+      system_guid = params[:event_log_entries][:system_guid]
+      raise "Failed to parse GUID parameter for system" if system_guid.nil?
+      
+      system = System.where(:guid => system_guid).first
+      system = System.create({:guid => system_guid, :name => ("System " + system_guid)}) if system.nil?
+      raise "Failed to create system" if system.nil?
+    
+      event_log_entries = params[:event_log_entries][:event_log_entry]
+      event_log_entries.each do |entry|
+        entry[:system_id] = system.id        
       end
+    
+    rescue Exception => ex 
+    
+      logger.error ex.message
+    
+    ensure
+
+      respond_to do |format|
+        if EventLogEntry.create(event_log_entries)
+          format.html { render nothing: true, status: :ok }
+        else
+          format.html { render nothing: true, status: :unprocessable_entity  }
+        end
+      end
+
     end
+    
   end
     
 end
