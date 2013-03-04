@@ -1,9 +1,11 @@
 ApplicationMonitorApp::Application.routes.draw do
-  resources :session_log_entries
+  resources :session_log_entries do
+    collection do
+      post 'upload'
+    end
+  end
 
   resources :sessions
-
-  # resources :event_log_entries
 
   resources :event_log_entries do
     collection do

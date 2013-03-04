@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130304064135) do
+ActiveRecord::Schema.define(:version => 20130304095624) do
 
   create_table "data_item_types", :force => true do |t|
     t.string   "name"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(:version => 20130304064135) do
   create_table "numeric_data_items", :force => true do |t|
     t.integer  "data_item_type_id"
     t.integer  "session_log_entry_id"
-    t.float    "value"
+    t.float    "recorded_value"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
