@@ -89,11 +89,9 @@ class EventLogEntriesController < ApplicationController
 
     respond_to do |format|
       if EventLogEntry.create(event_log_entries)
-        format.html { redirect_to event_log_entries_url, notice: 'Event log entries were successfully uploaded.' }
-        format.json { head :no_content }
+        format.html { render nothing: true, status: :ok }
       else
-        format.html { redirect_to event_log_entries_url, notice: 'Failed to create event log entries.' }
-        format.json { head :no_content }
+        format.html { render nothing: true, status: :unprocessable_entity  }
       end
     end
   end
