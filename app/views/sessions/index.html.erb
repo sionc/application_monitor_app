@@ -17,8 +17,8 @@
     <td><%= session.guid %></td>
     <td><%= session.system_id %></td>
     <td><%= session.process_id %></td>
-    <td><%= session.start_time %></td>
-    <td><%= session.exit_time %></td>
+    <td><%= Time.at(session.start_time) unless session.nil? %></td>
+    <td><%= Time.at(session.exit_time) unless session.nil? %></td>
     <td><%= link_to 'Show', session %></td>
     <td><%= link_to 'Edit', edit_session_path(session) %></td>
     <td><%= link_to 'Destroy', session, confirm: 'Are you sure?', method: :delete %></td>
