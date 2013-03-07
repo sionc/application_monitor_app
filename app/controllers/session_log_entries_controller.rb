@@ -135,27 +135,54 @@ class SessionLogEntriesController < ApplicationController
         raise "Failed to create session for log entries" if session.nil?
       end
     
-      session_log_entries = params[:session_log_entries][:session_log_entry]
+      session_log_entries_param = params[:session_log_entries][:session_log_entry]     
+      session_log_entries = Array.new
+      
+      # If there are multiple entries, session log entries will already be an array.      
+      # If there is a single entry, it will be sent in the form of a hash, so we need 
+      # to convert it to an array
+      if session_log_entries_param.kind_of?(Array)
+        session_log_entries = session_log_entries_param
+      else
+        session_log_entries[0] = session_log_entries_param
+      end
       
       # For each session log entry in array
       session_log_entries.each do |entry|
         time_recorded = entry[:time_recorded]
         raise "Failed to parse time recorded parameter for log entry" if time_recorded.nil?
         
+        # Check wheter an entry already exists
+        session_log_entry = SessionLogEntry.where(:session_id => session.id, :time_recorded => time_recorded).first
+
+        # Cannot update a log entry once it has been created, so move to the next entry
+        next unless session_log_entry.nil?
+        
         entry[:session_id] = session.id
         
         # Make a copy of numeric data items
-        numeric_data_items = entry[:numeric_data_items].clone
+        numeric_data_item_param = entry[:numeric_data_item].clone
       
         # Delete the numeric data items from the entry
-        entry.delete(:numeric_data_items)
-      
+        entry.delete(:numeric_data_item)
+        
         # Create a session log entry record
-        session_log_entry = SessionLogEntry.create(entry)
+        session_log_entry = SessionLogEntry.create(entry) if session_log_entry.nil?
         raise "Failed to create session log entry" if session_log_entry.nil?
       
+        # If there are multiple numeric data item entries, numeric_data_items_param will already 
+        # be an array.      
+        # If there is a single entry, it will be sent in the form of a hash, so we need to convert
+        # it to an array.
+        numeric_data_items = Array.new
+        if numeric_data_item_param.kind_of?(Array)
+          numeric_data_items = numeric_data_item_param
+        else
+          numeric_data_items[0] = numeric_data_item_param
+        end
+      
         # For each numeric data item
-        numeric_data_items[:numeric_data_item].each do |item|
+        numeric_data_items.each do |item|
           type_name = item[:name]
           raise "Failed to parse name of data item type" if type_name.nil?
           

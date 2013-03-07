@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+	<th>Source</th>
     <th>Message</th>
     <th>Time generated</th>
     <th></th>
@@ -11,6 +12,7 @@
 
 <% @event_log_entries.each do |event_log_entry| %>
   <tr>
+	<td><%= event_log_entry.source %></td>
     <td><%= event_log_entry.message %></td>
     <td><%= Time.at(event_log_entry.time_generated) unless event_log_entry.time_generated.nil? %></td>
     <td><%= link_to 'Show', event_log_entry %></td>
