@@ -1,4 +1,8 @@
 ApplicationMonitorApp::Application.routes.draw do
+  get "pages/dashboard"
+
+  get "page/dashboard"
+
   resources :systems
 
   resources :session_log_entries do
