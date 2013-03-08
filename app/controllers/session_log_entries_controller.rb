@@ -200,14 +200,25 @@ class SessionLogEntriesController < ApplicationController
           numeric_data_item = NumericDataItem.create({:session_log_entry_id => session_log_entry.id,
                                                       :data_item_type_id => data_item_type.id,
                                                       :recorded_value => recorded_value})
-          raise "Failed to create numeric data item" if numeric_data_item.nil?                                                
+          raise "Failed to create numeric data item" if numeric_data_item.nil?                                           
         end
-      end    
+      end
+    
+      # Check whether active_usage needs to be updated. 
+      # If yes, then add the active usage seconds to the current active usage value.
+      active_usage = log_entry_session[:active_usage]
+      unless active_usage.nil?
+        current_active_usage = session.active_usage.nil? ? 0 : session.active_usage
+        new_active_usage = current_active_usage + active_usage.to_i
+        raise "Failed to update active usage for session" unless session.update_attributes(:active_usage => new_active_usage)
+      end   
     
       # Check whether session has an exit time. 
       # If yes, then update the attribute
       exit_time = log_entry_session[:exit_time]
-      updated_session = session.update_attributes(:exit_time => exit_time) unless exit_time.nil?
+      unless exit_time.nil?       
+        raise "Failed to update exit time for session" unless session.update_attributes(:exit_time => exit_time)
+      end
     
       completed = true;
     rescue Exception => ex 

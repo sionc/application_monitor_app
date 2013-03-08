@@ -7,6 +7,7 @@
     <th>Process</th>
     <th>Start time</th>
     <th>Exit time</th>
+    <th>Active usage (in seconds)</th>
     <th></th>
     <th></th>
     <th></th>
@@ -19,6 +20,7 @@
     <td><%= session.process_id %></td>
     <td><%= Time.at(session.start_time) unless session.start_time.nil? %></td>
     <td><%= Time.at(session.exit_time) unless session.exit_time.nil? %></td>
+    <td><%= session.active_usage %></td>
     <td><%= link_to 'Show', session %></td>
     <td><%= link_to 'Edit', edit_session_path(session) %></td>
     <td><%= link_to 'Destroy', session, confirm: 'Are you sure?', method: :delete %></td>

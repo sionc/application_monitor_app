@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307185132) do
+ActiveRecord::Schema.define(:version => 20130308190510) do
 
   create_table "data_item_types", :force => true do |t|
     t.string   "name"
@@ -50,8 +50,9 @@ ActiveRecord::Schema.define(:version => 20130307185132) do
     t.integer  "process_id"
     t.integer  "start_time"
     t.integer  "exit_time"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "active_usage"
   end
 
   create_table "system_processes", :force => true do |t|
