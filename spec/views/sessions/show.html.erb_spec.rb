@@ -5,7 +5,7 @@ describe "sessions/show" do
     @session = assign(:session, stub_model(Session,
       :guid => "Guid",
       :system_id => 1,
-      :process_id => 2,
+      :system_process_id => 2,
       :start_time => 3,
       :exit_time => 4
     ))

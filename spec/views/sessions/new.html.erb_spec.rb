@@ -5,7 +5,7 @@ describe "sessions/new" do
     assign(:session, stub_model(Session,
       :guid => "MyString",
       :system_id => 1,
-      :process_id => 1,
+      :system_process_id => 1,
       :start_time => 1,
       :exit_time => 1
     ).as_new_record)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308190510) do
+ActiveRecord::Schema.define(:version => 20130308230145) do
 
   create_table "data_item_types", :force => true do |t|
     t.string   "name"
@@ -47,11 +47,11 @@ ActiveRecord::Schema.define(:version => 20130308190510) do
   create_table "sessions", :force => true do |t|
     t.string   "guid"
     t.integer  "system_id"
-    t.integer  "process_id"
+    t.integer  "system_process_id"
     t.integer  "start_time"
     t.integer  "exit_time"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.integer  "active_usage"
   end
 

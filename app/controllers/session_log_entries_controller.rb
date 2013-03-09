@@ -129,7 +129,7 @@ class SessionLogEntriesController < ApplicationController
         # Create session
         start_time = log_entry_session[:start_time]
         session = Session.create({:guid => session_guid, 
-                                  :process_id => session_process.id, 
+                                  :system_process_id => session_process.id, 
                                   :start_time => start_time,
                                   :system_id => system.id})
         raise "Failed to create session for log entries" if session.nil?

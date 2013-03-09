@@ -17,7 +17,7 @@
   <tr>
     <td><%= session.guid %></td>
     <td><%= session.system_id %></td>
-    <td><%= session.process_id %></td>
+    <td><%= session.system_process_id %></td>
     <td><%= Time.at(session.start_time) unless session.start_time.nil? %></td>
     <td><%= Time.at(session.exit_time) unless session.exit_time.nil? %></td>
     <td><%= session.active_usage %></td>
