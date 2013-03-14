@@ -4,5 +4,7 @@ This web application is part of the application monitoring utility developed by 
 It handles POST requests from systems with Adept ACE installations and archives the diagnostic data coming from these systems.
 It is also used for analyzing the data and providing a summary of the diagnostic information.
 
+Version: 1.0.0.1
+
 Copyright (c) 2013 Adept Technology, Inc.
 
