@@ -6,8 +6,6 @@
     <th>Message</th>
     <th>Time generated</th>
     <th></th>
-    <th></th>
-    <th></th>
   </tr>
 
 <% @event_log_entries.each do |event_log_entry| %>
@@ -16,12 +14,6 @@
     <td><%= event_log_entry.message %></td>
     <td><%= Time.at(event_log_entry.time_generated) unless event_log_entry.time_generated.nil? %></td>
     <td><%= link_to 'Show', event_log_entry %></td>
-    <td><%= link_to 'Edit', edit_event_log_entry_path(event_log_entry) %></td>
-    <td><%= link_to 'Destroy', event_log_entry, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New Event log entry', new_event_log_entry_path %>

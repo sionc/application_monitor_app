@@ -1,2 +1,36 @@
-<h1>Pages#dashboard</h1>
-<p>Find me in app/views/pages/dashboard.html.erb</p>
+<h2>Summary for the last 30 days</h2>
+
+<br />
+
+<table>
+    
+<% table_header_row_displayed = false %>
+<% @statistics_summary.each do |name_version, statistics| %>
+      
+  <% unless table_header_row_displayed %>  
+  
+  <tr>
+
+    <th></th>          
+    <% statistics.keys.each do |stat_name| %>   
+      <th><%= stat_name %></th>          
+    <% end %>
+  
+  </tr>
+  
+  <% table_header_row_displayed = true %>   
+  
+  <% end %>  
+
+  <tr>
+    
+    <td><%= name_version %></td>  
+    <% statistics.values.each do |stat_value| %>
+    <td><%= stat_value %></td>
+    <% end %>
+    
+  </tr>
+
+<% end %>
+
+</table>

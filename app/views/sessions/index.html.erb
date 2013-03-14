@@ -9,8 +9,6 @@
     <th>Exit time</th>
     <th>Active usage (in seconds)</th>
     <th></th>
-    <th></th>
-    <th></th>
   </tr>
 
 <% @sessions.each do |session| %>
@@ -22,12 +20,6 @@
     <td><%= Time.at(session.exit_time) unless session.exit_time.nil? %></td>
     <td><%= session.active_usage %></td>
     <td><%= link_to 'Show', session %></td>
-    <td><%= link_to 'Edit', edit_session_path(session) %></td>
-    <td><%= link_to 'Destroy', session, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New Session', new_session_path %>

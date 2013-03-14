@@ -1,19 +1,19 @@
 ApplicationMonitorApp::Application.routes.draw do
   get "pages/dashboard"
 
-  get "page/dashboard"
+  root :to => 'pages#dashboard'
+  
+  resources :systems, :only => [:index, :show]
+  
+  resources :sessions, :only => [:index, :show]
 
-  resources :systems
-
-  resources :session_log_entries do
+  resources :session_log_entries, :only => [:index, :show] do
     collection do
       post 'upload'
     end
   end
 
-  resources :sessions
-
-  resources :event_log_entries do
+  resources :event_log_entries, :only => [:index, :show] do
     collection do
       post 'upload'
     end

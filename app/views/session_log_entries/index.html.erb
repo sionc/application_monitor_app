@@ -5,8 +5,6 @@
     <th>Session</th>
     <th>Time recorded</th>
     <th></th>
-    <th></th>
-    <th></th>
   </tr>
 
 <% @session_log_entries.each do |session_log_entry| %>
@@ -14,12 +12,6 @@
     <td><%= session_log_entry.session_id %></td>
     <td><%= Time.at(session_log_entry.time_recorded) unless session_log_entry.time_recorded.nil? %></td>
     <td><%= link_to 'Show', session_log_entry %></td>
-    <td><%= link_to 'Edit', edit_session_log_entry_path(session_log_entry) %></td>
-    <td><%= link_to 'Destroy', session_log_entry, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New Session log entry', new_session_log_entry_path %>
