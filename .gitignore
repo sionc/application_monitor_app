@@ -19,3 +19,6 @@
 
 # Ignore rubymine generated files
 .idea/*
+
+# Ignore SVN files
+.svn/

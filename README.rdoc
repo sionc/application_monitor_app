@@ -1,10 +1,11 @@
-== Application Monitor ReadMe File
+== Application Monitor Web Application 1.0.0.0 ReadMe File
 
 This web application is part of the application monitoring utility developed by Adept Technology, Inc.
 It handles POST requests from systems with Adept ACE installations and archives the diagnostic data coming from these systems.
 It is also used for analyzing the data and providing a summary of the diagnostic information.
 
-Version: 1.0.0.1
+Application Monitor Web Application Version: 1.0.0.0
+Ruby on Rails Version: 3.2.5
+Ruby Version: 1.9.3-p194
 
-Copyright (c) 2013 Adept Technology, Inc.
-
+Copyright (c) 2013 Adept Technology, Inc. All rights reserved.
