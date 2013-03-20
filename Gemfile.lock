@@ -124,11 +124,3 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   sqlite3
   uglifier (>= 1.0.3)
-~> 3.2.1)
-  jquery-rails
-  pg
-  rails (= 3.2.5)
-  rspec-rails
-  sass-rails (~> 3.2.3)
-  sqlite3
-  uglifier (>= 1.0.3)

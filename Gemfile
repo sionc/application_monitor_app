@@ -44,6 +44,4 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails'
-endevelopment, :test do
-  gem 'rspec-rails'
 end
