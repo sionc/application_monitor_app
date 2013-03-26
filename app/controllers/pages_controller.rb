@@ -20,7 +20,8 @@ class PagesController < ApplicationController
     average_memory_usage_type = DataItemType.where(:name => "Average Memory Usage").first
     peak_memory_usage_type = DataItemType.where(:name => "Peak Memory Usage").first
     
-    @statistics_summary = {}
+    statistics_summary_by_process_type = {}
+    statistics_details_by_app_version = {}
     
     # Find all registered processes
     SystemProcess.find_each do |system_process|
@@ -29,12 +30,17 @@ class PagesController < ApplicationController
       sessions = system_process.sessions_in_range(from, to)
       total_usage = 0
       active_usage = 0
+      active_systems = []
       average_memory_usage_arr = []
       peak_memory_usage_arr = []
       
       # Loop through all the sessions for this process that are in the date range
       sessions.each do |session|
-       
+         
+         # Keep track of the ids of the systems that have sessions in the date range
+         system_id = session.system.id
+         active_systems << system_id unless active_systems.include? system_id
+        
          # Calculate total usage
          start_time = session.start_time
          exit_time = session.exit_time.nil? ? start_time : session.exit_time
@@ -84,19 +90,61 @@ class PagesController < ApplicationController
       arr_size = peak_memory_usage_arr.size
       peak_memory_usage = (arr_size > 0) ? peak_memory_usage_arr.max : 0
       
-      # Create the hash containing the summary of statistics
+      # Create the hash containing the summary of statistics by version
       system_process_summary = {}
       system_process_summary["Total Usage"] = total_usage
       system_process_summary["Active Usage"] = active_usage
       system_process_summary["Average Memory Usage"] = average_memory_usage.round
       system_process_summary["Peak Memory Usage"] = peak_memory_usage.round
+      system_process_summary["Active Systems"] = active_systems
       
-      @statistics_summary[system_process.name + " " + system_process.software_version] = system_process_summary
+      process_name = system_process.name
+      version = system_process.software_version
+      app_version = (process_name.start_with?("Ace") ? "Ace" : process_name) + " " + version
+      statistics_details_by_app_version[app_version] = {} if statistics_details_by_app_version[app_version].nil?
+      statistics_details_by_app_version[app_version][process_name] = system_process_summary
     end
-       
+    
+    # Create a summary based on the process type
+    statistics_details_by_app_version.each do |app_version, statistics_by_process_name| 
+      statistics_by_process_name.each do |name, statistics|
+        statistics_summary_by_process_type[name] = {} if statistics_summary_by_process_type[name].nil?
+        statistics_summary = statistics_summary_by_process_type[name]
+        
+        statistics_summary["Total Usage"] = 0 if statistics_summary["Total Usage"].nil?
+        statistics_summary["Total Usage"] += statistics["Total Usage"]
+        
+        statistics_summary["Active Usage"] = 0 if statistics_summary["Active Usage"].nil?
+        statistics_summary["Active Usage"] += statistics["Active Usage"]
+        
+        statistics_summary["Active Systems Count"] = 0 if statistics_summary["Active Systems"].nil?
+        statistics_summary["Active Systems Count"] += statistics["Active Systems"].length        
+      end
+    end
+    
+    # Create a hash for the event summary
+    sessions_count = 0
+    exceptions_count = 0
+    systems  = System.all   
+    unless systems.nil?
+      systems.each do |system|
+        sessions_count += system.sessions_count(from, to)
+        exceptions_count += system.event_log_entries_count(from, to)
+      end
+    end
+    event_summary = {}
+    event_summary["Sessions Count"] = sessions_count
+    event_summary["Exceptions Count"] = exceptions_count
+    
+    @statistics = {}
+    @statistics["Summary"] = statistics_summary_by_process_type
+    @statistics["Summary"]["Sessions Count"] = sessions_count
+    @statistics["Summary"]["Exceptions Count"] = exceptions_count
+    @statistics["Details"] = statistics_details_by_app_version
+    
     respond_to do |format|
       format.html # dashboard.html.erb
-      format.json { render json: @statistics_summary }
+      format.json { render json: @statistics }
     end        
     
   end

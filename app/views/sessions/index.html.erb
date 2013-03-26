@@ -1,25 +1,31 @@
-<h1>Listing sessions</h1>
+<div class="row">
+    <div class="span12">
+      <h4 class="header">Sessions</h4>
+      
+      <table class="table table-striped sortable">
+        <tr>
+          <th>Guid</th>
+          <th>System</th>
+          <th>Process</th>
+          <th>Start time</th>
+          <th>Exit time</th>
+          <th>Active usage (in seconds)</th>
+          <th></th>
+        </tr>
 
-<table>
-  <tr>
-    <th>Guid</th>
-    <th>System</th>
-    <th>Process</th>
-    <th>Start time</th>
-    <th>Exit time</th>
-    <th>Active usage (in seconds)</th>
-    <th></th>
-  </tr>
+      <% @sessions.each do |session| %>
+        <tr>
+          <td><%= session.guid %></td>
+          <td><%= session.system_id %></td>
+          <td><%= session.system_process_id %></td>
+          <td><%= Time.at(session.start_time) unless session.start_time.nil? %></td>
+          <td><%= Time.at(session.exit_time) unless session.exit_time.nil? %></td>
+          <td><%= session.active_usage %></td>
+          <td><%= link_to 'Show', session %></td>
+        </tr>
+      <% end %>
+      </table>
 
-<% @sessions.each do |session| %>
-  <tr>
-    <td><%= session.guid %></td>
-    <td><%= session.system_id %></td>
-    <td><%= session.system_process_id %></td>
-    <td><%= Time.at(session.start_time) unless session.start_time.nil? %></td>
-    <td><%= Time.at(session.exit_time) unless session.exit_time.nil? %></td>
-    <td><%= session.active_usage %></td>
-    <td><%= link_to 'Show', session %></td>
-  </tr>
-<% end %>
-</table>
+    </div>
+  </div>
+

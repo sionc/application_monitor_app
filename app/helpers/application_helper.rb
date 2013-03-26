@@ -5,4 +5,10 @@
 # The change history for this file is located in svn and can be viewed using the svn utilities.
 
 module ApplicationHelper
+
+  # Converts seconds to hours 
+  def to_hours seconds, round_to
+    (seconds.to_f / 3600).round(round_to)
+  end
+
 end

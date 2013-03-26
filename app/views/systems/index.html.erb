@@ -1,17 +1,22 @@
-<h1>Listing systems</h1>
+<div class="row">
+    <div class="span12">
+      <h4 class="header">Systems</h4>
+      
+      <table class="table table-striped sortable">
+          <tr>
+              <th>Guid</th>
+              <th>Name</th>
+              <th></th>
+            </tr>
 
-<table>
-  <tr>
-    <th>Guid</th>
-    <th>Name</th>
-    <th></th>
-  </tr>
+          <% @systems.each do |system| %>
+            <tr>
+              <td><%= system.guid %></td>
+              <td><%= system.name %></td>
+              <td><%= link_to 'Show', system %></td>
+            </tr>
+          <% end %>
+      </table>
 
-<% @systems.each do |system| %>
-  <tr>
-    <td><%= system.guid %></td>
-    <td><%= system.name %></td>
-    <td><%= link_to 'Show', system %></td>
-  </tr>
-<% end %>
-</table>
+    </div>
+  </div>
