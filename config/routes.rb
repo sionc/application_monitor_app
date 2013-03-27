@@ -6,17 +6,7 @@
 
 ApplicationMonitorApp::Application.routes.draw do
   get "pages/dashboard"
-  get "pages/calendar"
-  get "pages/faq"
-  get "pages/index"
-  get "pages/login"
-  get "pages/messages"
-  get "pages/paragraphs"
-  get "pages/profile"
-  get "pages/settings"
-  get "pages/stream"
-  get "pages/users"
-
+  
   root :to => 'pages#dashboard'
   
   resources :systems, :only => [:index, :show]

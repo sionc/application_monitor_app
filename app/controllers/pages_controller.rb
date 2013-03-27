@@ -8,8 +8,33 @@ class PagesController < ApplicationController
   
   # GET /pages/dashboard
   def dashboard
-    from = params[:from]
-    to = params[:to]
+    from_param = params[:from]
+    to_param = params[:to]
+    
+    from = nil
+    to = nil
+    
+    # Parse the from parameter and convert to UTC
+    unless from_param.nil?
+      from_tokens = from_param.split("/")
+      if (from_tokens.length == 3)
+        month = from_tokens[0]
+        day = from_tokens[1]
+        year = from_tokens[2]
+        from = Time.new(year, month, day).utc.to_i  
+      end 
+    end
+    
+    # Parse the to parameter and convert to UTC
+    unless to_param.nil?  
+      to_tokens = to_param.split("/")      
+      if (to_tokens.length == 3)
+        month = to_tokens[0]
+        day = to_tokens[1]
+        year = to_tokens[2]
+        to = Time.new(year, month, day).utc.to_i
+      end 
+    end
     
     # If from and to parameters are not provided, then use
     current_utc_time = Time.now.utc
@@ -28,6 +53,8 @@ class PagesController < ApplicationController
       
       # Find all the sessions that are in range
       sessions = system_process.sessions_in_range(from, to)
+      next if sessions.nil? || (sessions.count <= 0)
+      
       total_usage = 0
       active_usage = 0
       active_systems = []
@@ -132,11 +159,15 @@ class PagesController < ApplicationController
         exceptions_count += system.event_log_entries_count(from, to)
       end
     end
-    event_summary = {}
-    event_summary["Sessions Count"] = sessions_count
-    event_summary["Exceptions Count"] = exceptions_count
+    
+    time_at_from = Time.at(from)
+    time_at_to = Time.at(to)
+    from_str = time_at_from.month.to_s + "/" + time_at_from.day.to_s + "/" + time_at_from.year.to_s
+    to_str = time_at_to.month.to_s + "/" + time_at_to.day.to_s + "/" + time_at_to.year.to_s
     
     @statistics = {}
+    @statistics["From"] = from_str
+    @statistics["To"] = to_str
     @statistics["Summary"] = statistics_summary_by_process_type
     @statistics["Summary"]["Sessions Count"] = sessions_count
     @statistics["Summary"]["Exceptions Count"] = exceptions_count

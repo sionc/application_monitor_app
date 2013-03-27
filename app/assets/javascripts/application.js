@@ -13,3 +13,27 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+$(function() {
+    var navPathsByTabId = {
+        "#dashboard_tab" : "/pages/dashboard", 
+        "#sessions_tab"  : "/sessions",
+        "#events_tab"    : "/event_log_entries",
+        "#systems_tab"   : "/systems"
+    };
+    
+    var selectedPath = window.location.pathname;
+    var activated = false;
+    
+    // Search for the first tab that is associated with the current path
+    for(var tabId in navPathsByTabId) {
+        var path = navPathsByTabId[tabId];
+        if ((selectedPath.search(path) == 0) && !activated) {
+            $(tabId).addClass("active");
+            activated = true;
+        }
+        else {
+            $(tabId).removeClass("active");
+        }
+    }
+});

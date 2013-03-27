@@ -1,187 +1,199 @@
 <div class="row">
     <div class="span12">
         <h4 class="header">Dashboard</h4>
-        <h5>Summary for the last 30 days</h5>
 
-        <br />
+    </div>
+    <!-- Display the summary for all ACE installations that are reporting data -->
+    <% unless @statistics.nil? %>
 
-        <!-- Display the summary for all ACE installations that are reporting data -->
-        <% unless @statistics.nil? %>
+    <% statistics_summary = @statistics["Summary"] %>
+    <% statistics_details = @statistics["Details"] %>
+    <% statistics_from = @statistics["From"].nil? ? "" : @statistics["From"] %>
+    <% statistics_to = @statistics["To"].nil? ? "" : @statistics["To"]  %>
 
-        <% statistics_summary = @statistics["Summary"] %>
-        <% statistics_details = @statistics["Details"] %>
+    <%= form_tag("/pages/dashboard", :method => "get", :class => "form-inline") do %>
 
-        <% unless statistics_summary.nil? %>
+    <%= label_tag(:from, "Results from") %>
+    <%= text_field_tag(:from, statistics_from , :id => "dashboard-from-datepicker", :class => "input-small") %>
 
-        <!-- Display total usage for ACE server -->
-        <% unless statistics_summary["Ace Server"].nil? %>
+    <%= label_tag(:to, "to") %>
+    <%= text_field_tag(:to, statistics_to, :id => "dashboard-to-datepicker", :class => "input-small") %>
 
-        <div class="panel">
-            <div class="top primary"><i class="batch-big b-alarm"></i>
-                <h6>Total Usage</h6>
-            </div>
-            <div class="bottom">
-                <h3><%= to_hours(statistics_summary["Ace Server"]["Total Usage"], 1) %></h3>
-                <h6>hours</h6>
-            </div>
+    <%= submit_tag("Refresh", :class => "btn") %>
+
+    <% end %>
+
+    <br />
+
+    <% unless statistics_summary.nil? %>
+
+    <!-- Display total usage for ACE server -->
+    <% unless statistics_summary["Ace Server"].nil? %>
+
+    <div class="panel">
+        <div class="top"><i class="icon-time icon-4x icon-white"></i>
+            <h6>Total Usage</h6>
         </div>
-
-        <% end %>
-
-        <!-- Display total usage for ACE client -->
-        <% unless statistics_summary["Ace Client"].nil? %>
-
-        <div class="panel">
-            <div class="top success"><i class="batch-big b-alarm"></i>
-                <h6>Active Usage</h6>
-            </div>
-            <div class="bottom">
-                <h3><%= to_hours(statistics_summary["Ace Client"]["Active Usage"], 1) %></h3>
-                <h6>hours</h6>
-            </div>
+        <div class="bottom">
+            <h3><%= to_hours(statistics_summary["Ace Server"]["Total Usage"], 1) %></h3>
+            <h6>hours</h6>
         </div>
+    </div>
 
-        <% end %>
+    <% end %>
 
-        <!-- Display total usage for Adept Emulator -->
-        <% unless statistics_summary["AdeptEmulator"].nil? %>
 
-        <div class="panel">
-            <div class="top info"><i class="batch-big b-alarm"></i>
-                <h6>Emulator Usage</h6>
-            </div>
-            <div class="bottom">
-                <h3><%= to_hours(statistics_summary["AdeptEmulator"]["Total Usage"], 1) %></h3>
-                <h6>hours</h6>
-            </div>
+    <!-- Display total usage for Adept Emulator -->
+    <% unless statistics_summary["Ace Server"].nil? %>
+
+    <div class="panel">
+        <div class="top"><i class="icon-laptop icon-4x"></i>
+            <h6>Active Systems</h6>
         </div>
-
-        <% end %>
-
-        <!-- Display total usage for Adept Emulator -->
-        <% unless statistics_summary["Ace Server"].nil? %>
-
-        <div class="panel">
-            <div class="top info"><i class="batch-big b-alarm"></i>
-                <h6>Active Systems</h6>
-            </div>
-            <div class="bottom">
-                <h3><%= statistics_summary["Ace Server"]["Active Systems Count"] %></h3>
-                <h6>systems</h6>
-            </div>
+        <div class="bottom">
+            <h3><%= statistics_summary["Ace Server"]["Active Systems Count"] %></h3>
+            <h6>systems</h6>
         </div>
+    </div>
 
-        <% end %>
+    <% end %>
 
-        <!-- Display total usage for Adept Emulator -->
-        <% unless statistics_summary["Exceptions Count"].nil? %>
+    <!-- Display total usage for ACE client -->
+    <% unless statistics_summary["Ace Client"].nil? %>
 
-        <div class="panel">
-            <div class="top info"><i class="batch-big b-alarm"></i>
-                <h6>Number of Exceptions</h6>
-            </div>
-            <div class="bottom">
-                <h3><%= statistics_summary["Exceptions Count"] %></h3>
-                <h6>exceptions</h6>
-            </div>
+    <div class="panel">
+        <div class="top"><i class="icon-time icon-4x"></i>
+            <h6>Active Usage</h6>
         </div>
+        <div class="bottom">
+            <h3><%= to_hours(statistics_summary["Ace Client"]["Active Usage"], 1) %></h3>
+            <h6>hours</h6>
+        </div>
+    </div>
 
-        <% end %>
+    <% end %>
 
-        <% end %>
+    <!-- Display total usage for Adept Emulator -->
+    <% unless statistics_summary["Exceptions Count"].nil? %>
 
-        <% unless statistics_details.nil? %>
+    <div class="panel">
+        <div class="top"><i class="icon-exclamation-sign icon-4x"></i>
+            <h6>Number of Exceptions</h6>
+        </div>
+        <div class="bottom">
+            <h3><%= statistics_summary["Exceptions Count"] %></h3>
+            <h6>exceptions</h6>
+        </div>
+    </div>
 
-        <!-- Group statistics details by major and minor version (ACE 3.3, ACE 3.2, etc.) -->
-        <!-- Ignore emulator processes for now -->
-        <% statistics_details_by_major_minor_version = {}
-        statistics_details.each do |app_version, statistics_by_name|
-            next unless app_version.start_with?("Ace")
+    <% end %>
 
-            app_version_tokens = app_version.split             
-            next unless (app_version_tokens.length == 2)
+    <!-- Display total usage for Adept Emulator -->
+    <% unless statistics_summary["AdeptEmulator"].nil? %>
 
-            version = app_version_tokens[1]
-            version_tokens = version.split('.')
-            next unless (version_tokens.length == 4)
+    <div class="panel">
+        <div class="top"><i class="icon-time icon-4x"></i>
+            <h6>Emulator Usage</h6>
+        </div>
+        <div class="bottom">
+            <h3><%= to_hours(statistics_summary["AdeptEmulator"]["Total Usage"], 1) %></h3>
+            <h6>hours</h6>
+        </div>
+    </div>
 
-            major_minor_version = version_tokens[0] + "." + version_tokens[1]
-
-            statistics_details_by_major_minor_version[major_minor_version] = {} if statistics_details_by_major_minor_version[major_minor_version].nil?
-            statistics_details_by_major_minor_version[major_minor_version][app_version] = statistics_by_name
-        end %>
+    <% end %>
 
 
-        <% statistics_details_by_major_minor_version.each do |major_minor_version, statistics_details_by_ace_version| %>
+    <% end %>
 
-        <div class="accordion widget" id="accordion2">
+    <% unless statistics_details.nil? %>
 
-            <h4 class="header">ACE <%= major_minor_version %></h4>
+    <!-- Group statistics details by major and minor version (ACE 3.3, ACE 3.2, etc.) -->
+    <!-- Ignore emulator processes for now -->
+    <% statistics_details_by_major_minor_version = {}
+    statistics_details.each do |app_version, statistics_by_name|
+        next unless app_version.start_with?("Ace")
 
-            <% statistics_details_by_ace_version.each_with_index do |(ace_version, statistics_by_name), index| %>       
+        app_version_tokens = app_version.split             
+        next unless (app_version_tokens.length == 2)
 
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <p>
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse-<%=index%>">
-                            <% ace_server_stats = statistics_by_name["Ace Server"] unless statistics_by_name.nil?
-                            active_systems = ace_server_stats.nil? ? [] : ace_server_stats["Active Systems"]
-                            active_systems_count = active_systems.nil? ? 0 : active_systems.length %>
-                            <%= ace_version %> (<%= active_systems_count %> active systems)
-                        </a>
-                    </p>
+        version = app_version_tokens[1]
+        version_tokens = version.split('.')
+        next unless (version_tokens.length == 4)
 
-                </div>
+        major_minor_version = version_tokens[0] + "." + version_tokens[1]
 
-                <div id="collapse-<%=index%>" class="accordion-body collapse" style="height: 0px;">
-                    <div class="accordion-inner">
+        statistics_details_by_major_minor_version[major_minor_version] = {} if statistics_details_by_major_minor_version[major_minor_version].nil?
+        statistics_details_by_major_minor_version[major_minor_version][app_version] = statistics_by_name
+    end %>
 
-                        <table class="table table-striped sortable">
 
-                            <% table_header_row_displayed = false %>
-                            <% statistics_by_name.each do |name, statistics| %>
+    <% statistics_details_by_major_minor_version.each do |major_minor_version, statistics_details_by_ace_version| %>
 
-                            <% unless table_header_row_displayed %>  
+    <div class="accordion widget" id="accordion2">
 
-                            <tr>
+        <h4 class="header">ACE <%= major_minor_version %></h4>
 
-                                <th></th>          
-                                <% statistics.keys.each do |stat_name| %>   
-                                <th><%= stat_name %></th>          
-                                <% end %>
+        <% statistics_details_by_ace_version.each_with_index do |(ace_version, statistics_by_name), index| %>       
 
-                            </tr>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <p>
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse-<%=index%>">
+                        <% ace_server_stats = statistics_by_name["Ace Server"] unless statistics_by_name.nil?
+                        active_systems = ace_server_stats.nil? ? [] : ace_server_stats["Active Systems"]
+                        active_systems_count = active_systems.nil? ? 0 : active_systems.length %>
+                        <%= ace_version %> (<%= active_systems_count %> active systems)
+                    </a>
+                </p>
 
-                            <% table_header_row_displayed = true %>   
+            </div>
 
-                            <% end %>  
+            <div id="collapse-<%=index%>" class="accordion-body collapse" style="height: 0px;">
+                <div class="accordion-inner">
 
-                            <tr>
+                    <table class="table table-striped sortable">
 
-                                <td><%= name %></td>  
-                                <% statistics.values.each do |stat_value| %>
-                                <td><%= stat_value %></td>
-                                <% end %>
+                        <% table_header_row_displayed = false %>
+                        <% statistics_by_name.each do |name, statistics| %>
 
-                            </tr>
+                        <% unless table_header_row_displayed %>  
 
+                        <tr>
+                            <th></th>          
+                            <% statistics.keys.each do |stat_name| %>   
+                            <th><%= stat_name %></th>          
                             <% end %>
+                        </tr>
 
-                        </table>
+                        <% table_header_row_displayed = true %>   
 
-                    </div>
+                        <% end %>  
+
+                        <tr>
+                            <td><%= name %></td>  
+                            <% statistics.values.each do |stat_value| %>
+                            <td><%= stat_value %></td>
+                            <% end %>
+                        </tr>
+
+                        <% end %>
+
+                    </table>
+
                 </div>
             </div>
-
-            <% end %>
-
         </div>
-
-        <% end %>
-
-        <% end %>
 
         <% end %>
 
     </div>
+
+    <% end %>
+
+    <% end %>
+
+    <% end %>
+
+</div>
 </div>
