@@ -11,3 +11,7 @@
  *= require_self
  *= require_tree .
  */
+
+.page-container {
+    min-height:600px;
+}

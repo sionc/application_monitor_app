@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Message:</b>
-  <%= @event_log_entry.message %>
+    <b>Message:</b>
+    <%= @event_log_entry.message %>
 </p>
 
 <p>
-  <b>Timestamp:</b>
-  <%= Time.at(@event_log_entry.time_generated) unless @event_log_entry.time_generated.nil? %>
+    <b>Timestamp:</b>
+    <%= Time.at(@event_log_entry.time_generated) unless @event_log_entry.time_generated.nil? %>
 </p>
 
 <%= link_to 'Back', event_log_entries_path %>

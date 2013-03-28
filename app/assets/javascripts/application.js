@@ -36,4 +36,8 @@ $(function() {
             $(tabId).removeClass("active");
         }
     }
+    
+    // If no match found, then default to dashboard
+    if (!activated)
+        $("#dashboard_tab").addClass("active");
 });

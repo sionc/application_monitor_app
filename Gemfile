@@ -45,3 +45,9 @@ gem 'jquery-rails'
 group :development, :test do
   gem 'rspec-rails'
 end
+
+# Gem for pagination
+gem 'kaminari'
+
+# Gem for authentication
+gem 'devise'

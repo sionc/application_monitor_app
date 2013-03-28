@@ -2,12 +2,20 @@
     <div class="container">
         <div class="row">
             <div class="span12">
+                
                 <ul class="pull-right">
-                    <!-- <li><a href="#">Link1</a></li> -->
-                    <li><a href="login.html">Login</a></li>
-                </ul><a id="logo" href="#">
-                    <h4>Application <strong>Monitor</strong></h4></a>
-                </div>
+                    <li>
+                    <% if user_signed_in? %>
+                       <%= current_user.email %>
+                       <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+                     <% else %>
+                       <%= link_to "Sign in", new_user_session_path %>
+                     <% end %>
+                     </li>
+                </ul>
+                <a id="logo" href="/"> <h4>Application <strong>Monitor</strong></h4> </a>
+                
             </div>
         </div>
     </div>
+</div>

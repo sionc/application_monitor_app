@@ -6,6 +6,8 @@
 
 class PagesController < ApplicationController
   
+  before_filter :authenticate_user!
+  
   # GET /pages/dashboard
   def dashboard
     from_param = params[:from]

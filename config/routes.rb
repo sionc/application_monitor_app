@@ -6,13 +6,15 @@
 
 ApplicationMonitorApp::Application.routes.draw do
   get "pages/dashboard"
-  
+
   root :to => 'pages#dashboard'
+  
+  # Devise is currently setup as a single user system
+  # See https://github.com/plataformatec/devise/wiki/How-To:-Set-up-devise-as-a-single-user-system
+  devise_for :users, :skip => :registrations
   
   resources :systems, :only => [:index, :show]
   
-  resources :sessions, :only => [:index, :show]
-
   resources :session_log_entries, :only => [:index, :show] do
     collection do
       post 'upload'
@@ -25,6 +27,11 @@ ApplicationMonitorApp::Application.routes.draw do
     end
   end
   
+  # Use named resources for sessions because it will conflict with
+  # devise sessions routes
+  resources :sessions, :as => :process_sessions, :only => [:index, :show]
+  
+  #  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -1,17 +1,23 @@
-<h1>Listing session_log_entries</h1>
+<div class="row">
+    <div class="span12">
+        <h4 class="header">Session Log Entries</h4>
+        
+        <%= paginate @session_log_entries %>
+        
+        <table class="table table-striped sortable">
+            <tr>
+                <th>Session</th>
+                <th>Time recorded</th>
+                <th></th>
+            </tr>
 
-<table>
-  <tr>
-    <th>Session</th>
-    <th>Time recorded</th>
-    <th></th>
-  </tr>
-
-<% @session_log_entries.each do |session_log_entry| %>
-  <tr>
-    <td><%= session_log_entry.session_id %></td>
-    <td><%= Time.at(session_log_entry.time_recorded) unless session_log_entry.time_recorded.nil? %></td>
-    <td><%= link_to 'Show', session_log_entry %></td>
-  </tr>
-<% end %>
-</table>
+            <% @session_log_entries.each do |session_log_entry| %>
+            <tr>
+                <td><%= session_log_entry.session_id %></td>
+                <td><%= Time.at(session_log_entry.time_recorded) unless session_log_entry.time_recorded.nil? %></td>
+                <td><%= link_to 'Show', session_log_entry %></td>
+            </tr>
+            <% end %>
+        </table>
+    </div>
+</div>

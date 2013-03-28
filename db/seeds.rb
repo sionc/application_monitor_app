@@ -11,3 +11,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+a_user = User.where(:email => "admin@admin.com")
+if a_user.nil?
+  u = User.new(:email => "admin@admin.com", :password => 'robots')
+  u.save!(:validate => false)
+end
